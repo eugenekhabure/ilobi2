@@ -1,0 +1,92 @@
+.plus-jakarta-sans{
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+  .idcard-container{
+    width: 100%;
+
+  }
+
+.idcard{
+    width: 440px;
+    font-family: "Plus Jakarta Sans", sans-serif; 
+    margin:0px auto;
+    box-shadow: 0px 6px 12px 0px rgba(58, 54, 148, 0.06);
+    border-radius: 8px;
+}
+.card-header{
+    display: table;
+    width: 100%;
+    background-image: linear-gradient(to right, #496FD7, #46A5ED );
+    border-radius: 8px 8px 0px 0px ;
+}
+.card-header p{
+    margin: 2px;
+    color: white;
+    font-size: 10px;
+}
+.company-details{
+    float: inline-start;
+    display: ruby;
+    padding: 16px;
+    margin-top: 10px;
+}
+.company-address{
+    float: inline-end;
+    display: table-column;
+    padding: 16px;
+}
+.card-body{
+    display: table;
+    width: 100%;
+}
+.user-image{
+    float: left;
+    padding: 16px;
+    border-radius: 8px;
+    width: 144px;
+    height: 144px;
+}
+.user-image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+.user-details{
+    padding: 16px;
+}
+.user-details p, h2{
+    margin: 2px;
+}
+.text-primary{
+    color: #496FD7;
+}
+.user-details h2{
+    font-size: 14px;
+    font-weight: 600;
+}
+.user-details p{
+    font-size: 14px;
+    font-weight: 400;
+}
+.user-details p:first-child{
+    font-size: 20px;
+    font-weight: 600;
+}
+.user-details .phone{
+    margin: 12px 0px;
+}
+.logo{
+    width: 32px !important;
+    height: 32px !important;
+}
+.company-name{
+    vertical-align: top;
+    display: inline-block;
+    line-height: 1.5;
+}
+.logo-img{
+    background-color: white;
+    border-radius: 8px;
+}

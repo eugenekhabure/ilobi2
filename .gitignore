@@ -1,0 +1,5 @@
+.env 
+wp-config.php 
+*.log 
+/node_modules 
+/vendor 
