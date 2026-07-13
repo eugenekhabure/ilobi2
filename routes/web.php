@@ -134,6 +134,31 @@ use App\Http\Controllers\HikvisionController;
 // ============================================
 use App\Http\Controllers\GoogleCalendarController;
 
+// ============================================
+// 🚫 PHASE 10: BLACKLIST CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\Admin\BlacklistController;
+
+// ============================================
+// 👁️ PHASE 10: WATCHLIST CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\Admin\WatchlistController;
+
+// ============================================
+// ⚠️ PHASE 10: ANOMALY ALERT CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\Admin\AnomalyAlertController;
+
+// ============================================
+// 👤 PHASE 10: FACIAL RECOGNITION CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\Admin\FacialRecognitionLogController;
+
+// ============================================
+// 📹 PHASE 10: SURVEILLANCE CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\Admin\SurveillanceFeedController;
+
 Auth::routes();
 
 Route::group(['middleware' => ['installed']], function () {
@@ -381,6 +406,55 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'installed'], 'as' =
     Route::post('google-calendar/disconnect', [GoogleCalendarController::class, 'disconnect'])->name('google-calendar.disconnect');
     Route::post('google-calendar/sync', [GoogleCalendarController::class, 'syncPreRegister'])->name('google-calendar.sync');
     Route::get('google-calendar/status', [GoogleCalendarController::class, 'status'])->name('google-calendar.status');
+
+    // ============================================
+    // 🚫 PHASE 10: BLACKLIST ROUTES
+    // ============================================
+    Route::resource('blacklist', BlacklistController::class);
+    Route::get('get-blacklist', [BlacklistController::class, 'getBlacklist'])->name('blacklist.get-blacklist');
+    Route::put('blacklist/remove/{id}', [BlacklistController::class, 'remove'])->name('blacklist.remove');
+    Route::post('blacklist/check', [BlacklistController::class, 'check'])->name('blacklist.check');
+
+    // ============================================
+    // 👁️ PHASE 10: WATCHLIST ROUTES
+    // ============================================
+    Route::resource('watchlist', WatchlistController::class);
+    Route::get('get-watchlist', [WatchlistController::class, 'getWatchlist'])->name('watchlist.get-watchlist');
+    Route::put('watchlist/resolve/{id}', [WatchlistController::class, 'resolve'])->name('watchlist.resolve');
+    Route::get('watchlist/high-priority', [WatchlistController::class, 'getHighPriority'])->name('watchlist.high-priority');
+
+    // ============================================
+    // ⚠️ PHASE 10: ANOMALY ALERT ROUTES
+    // ============================================
+    Route::resource('anomaly-alerts', AnomalyAlertController::class);
+    Route::get('get-anomaly-alerts', [AnomalyAlertController::class, 'getAnomalyAlerts'])->name('anomaly-alerts.get-anomaly-alerts');
+    Route::put('anomaly-alerts/acknowledge/{id}', [AnomalyAlertController::class, 'acknowledge'])->name('anomaly-alerts.acknowledge');
+    Route::put('anomaly-alerts/resolve/{id}', [AnomalyAlertController::class, 'resolve'])->name('anomaly-alerts.resolve');
+    Route::put('anomaly-alerts/false-alarm/{id}', [AnomalyAlertController::class, 'falseAlarm'])->name('anomaly-alerts.false-alarm');
+    Route::get('anomaly-alerts/stats', [AnomalyAlertController::class, 'getStats'])->name('anomaly-alerts.get-stats');
+    Route::get('anomaly-alerts/recent', [AnomalyAlertController::class, 'getRecent'])->name('anomaly-alerts.get-recent');
+
+    // ============================================
+    // 👤 PHASE 10: FACIAL RECOGNITION ROUTES
+    // ============================================
+    Route::resource('facial-recognition', FacialRecognitionLogController::class)->except(['create', 'store', 'edit', 'update']);
+    Route::get('get-facial-logs', [FacialRecognitionLogController::class, 'getLogs'])->name('facial-recognition.get-logs');
+    Route::delete('facial-recognition/delete-all', [FacialRecognitionLogController::class, 'deleteAll'])->name('facial-recognition.delete-all');
+    Route::get('facial-recognition/stats', [FacialRecognitionLogController::class, 'getStats'])->name('facial-recognition.get-stats');
+    Route::get('facial-recognition/chart-data', [FacialRecognitionLogController::class, 'getChartData'])->name('facial-recognition.chart-data');
+    Route::get('facial-recognition/export', [FacialRecognitionLogController::class, 'export'])->name('facial-recognition.export');
+
+    // ============================================
+    // 📹 PHASE 10: SURVEILLANCE ROUTES
+    // ============================================
+    Route::resource('surveillance', SurveillanceFeedController::class);
+    Route::get('get-surveillance-feeds', [SurveillanceFeedController::class, 'getFeeds'])->name('surveillance.get-feeds');
+    Route::get('surveillance/stream/{id}', [SurveillanceFeedController::class, 'stream'])->name('surveillance.stream');
+    Route::put('surveillance/test-connection/{id}', [SurveillanceFeedController::class, 'testConnection'])->name('surveillance.test-connection');
+    Route::put('surveillance/toggle-recording/{id}', [SurveillanceFeedController::class, 'toggleRecording'])->name('surveillance.toggle-recording');
+    Route::get('surveillance/stats', [SurveillanceFeedController::class, 'getStats'])->name('surveillance.get-stats');
+    Route::get('surveillance/online-cameras', [SurveillanceFeedController::class, 'getOnlineCameras'])->name('surveillance.online-cameras');
+    Route::get('surveillance/recording-cameras', [SurveillanceFeedController::class, 'getRecordingCameras'])->name('surveillance.recording-cameras');
 });
 
 /*Multi step form*/

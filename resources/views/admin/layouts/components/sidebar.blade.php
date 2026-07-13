@@ -411,6 +411,32 @@
             @endif
 
             {{-- ============================================ --}}
+            {{-- 🚫 PHASE 10: SECURITY & SURVEILLANCE MENU --}}
+            {{-- ============================================ --}}
+            <li class="nav-item dropdown">
+                <a class="nav-link has-dropdown" href="#">
+                    <i class="fas fa-shield-alt"></i> <span>🔒 Security &amp; Surveillance</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('admin.blacklist.index') }}">
+                        <i class="fas fa-user-slash"></i> Blacklist</a>
+                    </li>
+                    <li><a class="nav-link" href="{{ route('admin.watchlist.index') }}">
+                        <i class="fas fa-eye"></i> Watchlist</a>
+                    </li>
+                    <li><a class="nav-link" href="{{ route('admin.anomaly-alerts.index') }}">
+                        <i class="fas fa-exclamation-triangle"></i> Anomaly Alerts</a>
+                    </li>
+                    <li><a class="nav-link" href="{{ route('admin.facial-recognition.index') }}">
+                        <i class="fas fa-user-check"></i> Facial Recognition</a>
+                    </li>
+                    <li><a class="nav-link" href="{{ route('admin.surveillance.index') }}">
+                        <i class="fas fa-video"></i> Surveillance</a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- ============================================ --}}
             {{-- 📅 GOOGLE CALENDAR (Super Admin & Client Admin) --}}
             {{-- ============================================ --}}
             @if($isSuperAdmin || $isClientAdmin)
