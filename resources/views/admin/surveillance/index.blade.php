@@ -1,133 +1,103 @@
-@extends('layouts.admin')
+@extends('admin.layouts.master')
 
-@section('title', 'Surveillance Management')
-
-@section('content-header')
-<div class="page-header">
-    <h3 class="page-title">
-        <span class="page-title-icon bg-gradient-primary text-white me-2">
-            <i class="mdi mdi-cctv"></i>
-        </span>
-        Surveillance Management
-    </h3>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Surveillance</li>
-        </ol>
-    </nav>
-</div>
-@endsection
-
-@section('content')
-<div class="row">
-    <!-- Stats Cards -->
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-video text-success icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Online</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="online-count">0</h3>
-                        </div>
-                    </div>
+@section('main-content')
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Surveillance Management</h1>
                 </div>
-                <p class="card-statistics-2 text-muted"><span class="text-success"><i class="mdi mdi-check"></i></span> Active</p>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Surveillance</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-video-off text-danger icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Offline</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="offline-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-danger"><i class="mdi mdi-close"></i></span> Inactive</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-record text-primary icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Recording</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="recording-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-primary"><i class="mdi mdi-clock"></i></span> Active</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-camera text-warning icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Total Cameras</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="total-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-warning"><i class="mdi mdi-camera"></i></span> Installed</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h4 class="card-title">Camera Feeds</h4>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <a href="{{ route('admin.surveillance.create') }}" class="btn btn-gradient-primary btn-sm">
-                            <i class="mdi mdi-plus"></i> Add Camera
-                        </a>
+    <div class="content">
+        <div class="container-fluid">
+            <!-- Stats Cards -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="online-count">0</h3>
+                            <p>Online</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-video"></i>
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3 id="offline-count">0</h3>
+                            <p>Offline</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-video-slash"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3 id="recording-count">0</h3>
+                            <p>Recording</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-record-vinyl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="total-count">0</h3>
+                            <p>Total Cameras</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="surveillance-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Location</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Recording</th>
-                                <th>Added By</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Camera Feeds</h3>
+                            <div class="card-tools">
+                                <a href="{{ route('admin.surveillance.create') }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i> Add Camera
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover" id="surveillance-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Recording</th>
+                                        <th>Added By</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,7 +105,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <script>
 $(document).ready(function() {
     // Load stats

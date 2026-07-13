@@ -1,137 +1,107 @@
-@extends('layouts.admin')
+@extends('admin.layouts.master')
 
-@section('title', 'Facial Recognition Logs')
-
-@section('content-header')
-<div class="page-header">
-    <h3 class="page-title">
-        <span class="page-title-icon bg-gradient-primary text-white me-2">
-            <i class="mdi mdi-face-recognition"></i>
-        </span>
-        Facial Recognition Logs
-    </h3>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Facial Recognition</li>
-        </ol>
-    </nav>
-</div>
-@endsection
-
-@section('content')
-<div class="row">
-    <!-- Stats Cards -->
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-account-check text-success icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Matched</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="matched-count">0</h3>
-                        </div>
-                    </div>
+@section('main-content')
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Facial Recognition Logs</h1>
                 </div>
-                <p class="card-statistics-2 text-muted"><span class="text-success"><i class="mdi mdi-check"></i></span> Recognized</p>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Facial Recognition</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-account-off text-danger icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Unmatched</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="unmatched-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-danger"><i class="mdi mdi-close"></i></span> Unknown</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-alert text-warning icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Errors</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="error-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-warning"><i class="mdi mdi-alert"></i></span> Failed</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-calendar-today text-primary icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Today's Scans</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="today-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-primary"><i class="mdi mdi-clock"></i></span> Today</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h4 class="card-title">Recognition History</h4>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <button class="btn btn-danger btn-sm" id="deleteAllBtn">
-                            <i class="mdi mdi-delete"></i> Delete All
-                        </button>
-                        <a href="{{ route('admin.facial-recognition.export') }}" class="btn btn-gradient-success btn-sm">
-                            <i class="mdi mdi-download"></i> Export CSV
-                        </a>
+    <div class="content">
+        <div class="container-fluid">
+            <!-- Stats Cards -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="matched-count">0</h3>
+                            <p>Matched</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3 id="unmatched-count">0</h3>
+                            <p>Unmatched</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-slash"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="error-count">0</h3>
+                            <p>Errors</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 id="today-count">0</h3>
+                            <p>Today's Scans</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="facial-logs-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Confidence</th>
-                                <th>Device</th>
-                                <th>Time</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recognition History</h3>
+                            <div class="card-tools">
+                                <button class="btn btn-danger btn-sm" id="deleteAllBtn">
+                                    <i class="fas fa-trash"></i> Delete All
+                                </button>
+                                <a href="{{ route('admin.facial-recognition.export') }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa-download"></i> Export CSV
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover" id="facial-logs-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Confidence</th>
+                                        <th>Device</th>
+                                        <th>Time</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,7 +109,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <script>
 $(document).ready(function() {
     // Load stats

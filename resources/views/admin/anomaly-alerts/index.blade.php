@@ -1,132 +1,102 @@
-@extends('layouts.admin')
+@extends('admin.layouts.master')
 
-@section('title', 'Anomaly Alerts')
-
-@section('content-header')
-<div class="page-header">
-    <h3 class="page-title">
-        <span class="page-title-icon bg-gradient-primary text-white me-2">
-            <i class="mdi mdi-alert-circle"></i>
-        </span>
-        Anomaly Alerts
-    </h3>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Anomaly Alerts</li>
-        </ol>
-    </nav>
-</div>
-@endsection
-
-@section('content')
-<div class="row">
-    <!-- Stats Cards -->
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-alert-circle text-danger icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">New Alerts</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="new-count">0</h3>
-                        </div>
-                    </div>
+@section('main-content')
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Anomaly Alerts</h1>
                 </div>
-                <p class="card-statistics-2 text-muted"><span class="text-danger"><i class="mdi mdi-arrow-up"></i></span> Need attention</p>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Anomaly Alerts</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-eye text-warning icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Acknowledged</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="acknowledged-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-warning"><i class="mdi mdi-clock"></i></span> In progress</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-check-circle text-success icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">Resolved</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="resolved-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-success"><i class="mdi mdi-check"></i></span> Completed</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-        <div class="card card-statistics">
-            <div class="card-body">
-                <div class="clearfix">
-                    <div class="float-left">
-                        <i class="mdi mdi-close-circle text-secondary icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                        <p class="card-text text-right">False Alarms</p>
-                        <div class="fluid-container">
-                            <h3 class="card-title font-weight-bold text-right mb-0" id="false-count">0</h3>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-statistics-2 text-muted"><span class="text-secondary"><i class="mdi mdi-cancel"></i></span> Dismissed</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <h4 class="card-title">Alert History</h4>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <a href="{{ route('admin.anomaly-alerts.create') }}" class="btn btn-gradient-primary btn-sm">
-                            <i class="mdi mdi-plus"></i> Create Alert
-                        </a>
+    <div class="content">
+        <div class="container-fluid">
+            <!-- Stats Cards -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3 id="new-count">0</h3>
+                            <p>New Alerts</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="acknowledged-count">0</h3>
+                            <p>Acknowledged</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="resolved-count">0</h3>
+                            <p>Resolved</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-secondary">
+                        <div class="inner">
+                            <h3 id="false-count">0</h3>
+                            <p>False Alarms</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="anomaly-alerts-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Type</th>
-                                <th>Title</th>
-                                <th>Severity</th>
-                                <th>Status</th>
-                                <th>Occurred</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Alert History</h3>
+                            <div class="card-tools">
+                                <a href="{{ route('admin.anomaly-alerts.create') }}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i> Create Alert
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover" id="anomaly-alerts-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Type</th>
+                                        <th>Title</th>
+                                        <th>Severity</th>
+                                        <th>Status</th>
+                                        <th>Occurred</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,7 +104,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('js')
 <script>
 $(document).ready(function() {
     // Load stats
