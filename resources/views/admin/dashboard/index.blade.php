@@ -1,13 +1,14 @@
 @extends('admin.layouts.master')
 
-
+@section('title', 'Dashboard')
 
 @section('main-content')
 <section class="section">
     <div class="section-header">
-        <h1>{{ __('dashboard.dashboard') }}</h1>
+        <h1>Dashboard</h1>
         {{ Breadcrumbs::render('dashboard') }}
     </div>
+
     <div class="row">
         <div class="col-md-12">
             @if(!blank($attendance))
@@ -16,9 +17,9 @@
                     <span class="clock-span"><i class="fas fa-4x fa-clock"></i> {{ date('g:i A') }}</span><br>
                     @if($attendance->checkin_time)
                     <span class="text-success">
-                        {{ __('dashboard.clock_in_at') }} - {{$attendance->checkin_time}}
+                        Clock In At - {{$attendance->checkin_time}}
                         @if($attendance->checkout_time) <span class="text-danger ml-2">
-                            {{ __('dashboard.clock_out_at') }} - {{$attendance->checkout_time}}</span>@endif
+                            Clock Out At - {{$attendance->checkout_time}}</span>@endif
                     </span>
                     @endif
                 </p>
@@ -26,7 +27,7 @@
                 <form action="{{ route('admin.attendance.clockout')}}" method="post">
                     {{ csrf_field() }}
                     <button class="btn  d-flex inputbtnclockout align-items-center btn-dark" type="submit"><i
-                            class="fas fa-4x fa-sign-out-alt"></i>{{ __('dashboard.clock_out') }}</button>
+                            class="fas fa-4x fa-sign-out-alt"></i>Clock Out</button>
                 </form>
                 @endif
             </div>
@@ -37,7 +38,7 @@
                 </p>
                 <button type="button" class="btn  d-flex inputbtnclockin align-items-center btn-success"
                     data-toggle="modal" data-target="#exampleModal"><i
-                        class="fas fa-4x fa-sign-out-alt"></i>{{ __('dashboard.clock_in') }}</button>
+                        class="fas fa-4x fa-sign-out-alt"></i>Clock In</button>
             </div>
             @endif
         </div>
@@ -53,7 +54,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>{{ __('dashboard.total_visitors') }}</h4>
+                            <h4>Total Visitors</h4>
                         </div>
                         <div class="card-body">
                             {{$totalVisitor}}
@@ -70,7 +71,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>{{ __('dashboard.total_pre_registers') }}</h4>
+                            <h4>Total Pre Registers</h4>
                         </div>
                         <div class="card-body">
                             {{$totalPrerigister}}
@@ -90,7 +91,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>{{ __('dashboard.total_employees') }}</h4>
+                            <h4>Total Employees</h4>
                         </div>
                         <div class="card-body">
                             {{$totalEmployees}}
@@ -108,7 +109,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>{{ __('dashboard.total_visitors') }}</h4>
+                            <h4>Total Visitors</h4>
                         </div>
                         <div class="card-body">
                             {{$totalVisitor}}
@@ -125,7 +126,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>{{ __('dashboard.total_pre_registers') }}</h4>
+                            <h4>Total Pre Registers</h4>
                         </div>
                         <div class="card-body">
                             {{$totalPrerigister}}
@@ -141,17 +142,17 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h4>{{ __('dashboard.visitors') }} <span class="badge badge-primary">{{$totalVisitor}}</span></h4>
+                    <h4>Visitors <span class="badge badge-primary">{{$totalVisitor}}</span></h4>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive table-invoice">
                         <table class="table table-striped">
                             <tr>
-                                <th>{{ __('dashboard.name') }}</th>
-                                <th>{{ __('dashboard.email') }}</th>
-                                <th>{{ __('dashboard.visitor_id') }}</th>
-                                <th>{{ __('dashboard.employee') }}</th>
-                                <th>{{ __('dashboard.action') }}</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Visitor ID</th>
+                                <th>Employee</th>
+                                <th>Action</th>
                             </tr>
                             @if(!blank($visitors))
                             @foreach($visitors as $visitor)
@@ -202,13 +203,14 @@
         </div>
     </div>
 </section>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ __('dashboard.clock_in') }} - <span
+                <h5 class="modal-title" id="exampleModalLabel">Clock In - <span
                         class="clock-span"><i class="fas fa-4x fa-clock"></i> {{ date('g:i A') }}</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -218,7 +220,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>{{ __('dashboard.working_from') }}</label>
+                        <label>Working From</label>
                         <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
                             value="{{ old('title') }}" placeholder="e.g. Office, Home, etc.">
                         @error('title')
@@ -230,8 +232,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">{{ __('dashboard.close') }}</button>
-                    <button type="submit" class="btn btn-primary">{{ __('dashboard.clock_in') }}</button>
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Clock In</button>
                 </div>
             </form>
         </div>

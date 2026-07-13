@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
         $this->call(SettingTableSeeder::class);
         $this->call(RoleTableSeeder::class);
         $this->call(BackendMenuTableSeeder::class);
@@ -31,5 +32,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartmentTableSeeder::class);
         $this->call(DesignationTableSeeder::class);
         $this->call(LanguageSeeder::class);
+        $this->call(MaintenanceCategorySeeder::class);
     }
 }

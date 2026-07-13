@@ -1,9 +1,12 @@
 @extends('admin.layouts.master')
 
+@section('title', 'Packages')
+
 @section('main-content')
 <section class="section">
     <div class="section-header">
         <h1>Subscriptions</h1>
+        {{-- Breadcrumbs::render('packages') --}}
     </div>
 
     <div class="section-body">
@@ -11,16 +14,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPackageModal">
-                            <i class="fas fa-plus"></i> Create Package
-                        </button>
+                        <h4>Package List</h4>
+                        <div class="card-header-action">
+                            <a href="{{ route('admin.packages.create') }}" class="btn btn-primary">Add New Package</a>
+                        </div>
                     </div>
                     <div class="card-body">
                         @if(session('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
-                        @if(session('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
 
                         <div class="table-responsive">
@@ -38,13 +39,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($packages as $package)
+                                    @forelse($packages as $package)
                                         <tr>
                                             <td>{{ $package->id }}</td>
-                                            <td>{{ $package->name }}</td>
+                                            <td>{{ $package->package_name }}</td>
                                             <td>{{ $package->mrp }}</td>
                                             <td>{{ $package->amount }}</td>
-                                            <td>{{ ucfirst($package->type) }}</td>
+                                            <td>{{ ucfirst($package->subscription_type) }}</td>
                                             <td>{{ $package->days }}</td>
                                             <td>
                                                 @if($package->status == 1)
@@ -54,25 +55,28 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <button class="btn btn-warning edit-btn" 
-                                                    data-id="{{ $package->id }}" 
-                                                    data-name="{{ $package->name }}" 
-                                                    data-mrp="{{ $package->mrp }}" 
-                                                    data-amount="{{ $package->amount }}" 
-                                                    data-type="{{ $package->type }}" 
-                                                    data-days="{{ $package->days }}" 
-                                                    data-status="{{ $package->status }}"
-                                                    data-toggle="modal" data-target="#editPackageModal">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
+                                                <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                                </form>
+                                                <!-- ✅ FIXED: Changed 'admin.packages.updateStatus' to 'admin.package.updateStatus' -->
+                                                <form action="{{ route('admin.package.updateStatus') }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                                    <input type="hidden" name="status" value="{{ $package->status == 1 ? 0 : 1 }}">
+                                                    <button type="submit" class="btn btn-sm {{ $package->status == 1 ? 'btn-warning' : 'btn-success' }}">
+                                                        {{ $package->status == 1 ? 'Deactivate' : 'Activate' }}
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
-                                    @endforeach
-                                    @if($packages->isEmpty())
+                                    @empty
                                         <tr>
-                                            <td colspan="8" class="text-center">No packages found</td>
+                                            <td colspan="8" class="text-center">No packages found.</td>
                                         </tr>
-                                    @endif
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -82,125 +86,4 @@
         </div>
     </div>
 </section>
-
-<!-- Create Package Modal -->
-<div class="modal fade" id="createPackageModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create Package</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="createPackageForm" method="POST" action="{{ route('admin.packages.store') }}">
-                    @csrf
-                    <div class="form-group">
-                        <label>Package Name</label>
-                        <input type="text" class="form-control" name="package_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>MRP</label>
-                        <input type="number" class="form-control" name="mrp" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" class="form-control" name="amount" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Subscription Type</label>
-                        <select class="form-control" name="subscription_type" required>
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly">Yearly</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Days</label>
-                        <input type="number" class="form-control" name="enter_days" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select class="form-control" name="status" required>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Package</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Package Modal -->
-<div class="modal fade" id="editPackageModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Package</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editPackageForm" method="POST" action="{{ route('packages.update') }}">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" name="id" id="edit-package-id">
-                    <div class="form-group">
-                        <label>Package Name</label>
-                        <input type="text" class="form-control" name="package_name" id="edit-package-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>MRP</label>
-                        <input type="number" class="form-control" name="mrp" id="edit-package-mrp" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" class="form-control" name="amount" id="edit-package-amount" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Subscription Type</label>
-                        <select class="form-control" name="subscription_type" id="edit-package-type" required>
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="yearly">Yearly</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Days</label>
-                        <input type="number" class="form-control" name="enter_days" id="edit-package-days" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select class="form-control" name="status" id="edit-package-status" required>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Package</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-@endsection
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.edit-btn').click(function() {
-            $('#edit-package-id').val($(this).data('id'));
-            $('#edit-package-name').val($(this).data('name'));
-            $('#edit-package-mrp').val($(this).data('mrp'));
-            $('#edit-package-amount').val($(this).data('amount'));
-            $('#edit-package-type').val($(this).data('type').toLowerCase());
-            $('#edit-package-days').val($(this).data('days'));
-            $('#edit-package-status').val($(this).data('status'));
-        });
-    });
-</script>
 @endsection

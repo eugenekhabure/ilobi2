@@ -29,11 +29,130 @@ use App\Http\Controllers\Admin\AttendanceReportController;
 use App\Http\Controllers\Admin\PreRegistersReportController;
 use App\Http\Controllers\Admin\SubscriptionController;
 
+// ============================================
+// 🚀 NEW ONBOARDING CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\OnboardingController;
+
+// ============================================
+// 🏠 RESIDENTIAL MODULE CONTROLLER IMPORTS
+// ============================================
+use App\Http\Controllers\SubUnitController;
+use App\Http\Controllers\ResidentProfileController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\InvitationController;
+
+// ============================================
+// 📱 PWA CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\PwaController;
+
+// ============================================
+// 📟 ACCESS DEVICE CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\AccessDeviceController;
+
+// ============================================
+// 📊 ANALYTICS CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\AnalyticsController;
+
+// ============================================
+// 📝 SELF-SERVICE CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\SelfServiceController;
+
+// ============================================
+// 🔐 TWO-FACTOR AUTH CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\Auth\TwoFactorController;
+
+// ============================================
+// 🚨 EMERGENCY ALERT CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\EmergencyAlertController;
+
+// ============================================
+// 📢 BROADCAST CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\BroadcastController;
+
+// ============================================
+// 📢 ANNOUNCEMENT CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\AnnouncementController;
+
+// ============================================
+// 📝 FEEDBACK CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\FeedbackController;
+
+// ============================================
+// 🔧 MAINTENANCE REQUEST CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\MaintenanceRequestController;
+
+// ============================================
+// 🔧 MAINTENANCE CATEGORY CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\MaintenanceCategoryController;
+
+// ============================================
+// 🏊 AMENITY CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\AmenityController;
+
+// ============================================
+// 📢 COMMUNITY CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\CommunityController;
+
+// ============================================
+// 👤 STAFF CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\StaffController;
+
+// ============================================
+// 🏢 STAFF DEPARTMENT CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\StaffDepartmentController;
+
+// ============================================
+// 🔐 ZKTECO CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\ZKTecoController;
+
+// ============================================
+// 📹 HIKVISION CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\HikvisionController;
+
+// ============================================
+// 📅 GOOGLE CALENDAR CONTROLLER IMPORT
+// ============================================
+use App\Http\Controllers\GoogleCalendarController;
+
 Auth::routes();
 
 Route::group(['middleware' => ['installed']], function () {
     Auth::routes(['verify' => false]);
 });
+
+// ============================================
+// 🚀 LANDING PAGE (Public - No Auth Required)
+// ============================================
+Route::get('/', function () {
+    return view('frontend.index');
+})->name('home');
+
+// ============================================
+// 🚀 ONBOARDING WIZARD ROUTES
+// ============================================
+Route::get('/onboarding', [OnboardingController::class, 'index'])->name('onboarding');
+Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
+
 Route::group(['prefix' => 'install', 'as' => 'LaravelInstaller::', 'middleware' => ['web', 'install']], function () {
     Route::post('environment/saveWizard', [EnvironmentController::class, 'saveWizard'])->name('environmentSaveWizard');
 
@@ -42,15 +161,18 @@ Route::group(['prefix' => 'install', 'as' => 'LaravelInstaller::', 'middleware' 
     Route::post('purchase-code', [PurchaseCodeController::class, 'action'])->name('purchase_code.check');
 });
 
-Route::redirect('/', '/admin/dashboard')->middleware('backend_permission');
-Route::redirect('/admin', '/DashboardControllermin/dashboard')->middleware('backend_permission');
-
+// ============================================
+// 🚀 ADMIN LOGIN
+// ============================================
 Route::group(['prefix' => 'admin', 'middleware' => ['installed'], 'namespace' => 'Admin', 'as' => 'admin.'], function () {
     Route::get('login', [LoginController::class, 'showLoginForm']);
 });
 
 Route::get('admin/lang/{locale}', [LocalizationController::class, 'index'])->middleware(['installed'])->name('admin.lang.index');
 
+// ============================================
+// 🚀 ADMIN AUTHENTICATED ROUTES
+// ============================================
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'installed'], 'as' => 'admin.'], function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -136,9 +258,130 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'installed'], 'as' =
         Route::get('whatsapp', [SettingController::class, 'whatsappSetting'])->name('whatsapp-message');
         Route::post('whatsapp', [SettingController::class, 'whatsappSettingupdate'])->name('whatsapp-message-update');
     });
+
+    // ============================================
+    // 🏠 RESIDENTIAL MODULE WEB ROUTES
+    // ============================================
+    Route::resource('sub-units', SubUnitController::class);
+    Route::resource('resident-profiles', ResidentProfileController::class);
+    Route::resource('people', PersonController::class);
+    Route::resource('vehicles', VehicleController::class);
+    Route::resource('deliveries', DeliveryController::class);
+    Route::resource('invitations', InvitationController::class);
+
+    // ============================================
+    // 📟 ACCESS DEVICES WEB ROUTES
+    // ============================================
+    Route::resource('access-devices', AccessDeviceController::class);
+
+    // ============================================
+    // 📊 ANALYTICS ROUTES
+    // ============================================
+    Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+
+    // ============================================
+    // 🚨 EMERGENCY ALERT ROUTES
+    // ============================================
+    Route::resource('emergency-alerts', EmergencyAlertController::class);
+
+    // ============================================
+    // 📢 BROADCAST ROUTES
+    // ============================================
+    Route::resource('broadcasts', BroadcastController::class);
+    Route::get('broadcasts/template/{id}', [BroadcastController::class, 'useTemplate'])->name('broadcasts.template');
+
+    // ============================================
+    // 📢 ANNOUNCEMENT ROUTES
+    // ============================================
+    Route::resource('announcements', AnnouncementController::class);
+    Route::get('announcements/toggle-pin/{id}', [AnnouncementController::class, 'togglePin'])->name('announcements.toggle-pin');
+    Route::get('announcements/toggle-active/{id}', [AnnouncementController::class, 'toggleActive'])->name('announcements.toggle-active');
+
+    // ============================================
+    // 📝 FEEDBACK ROUTES
+    // ============================================
+    Route::resource('feedback', FeedbackController::class)->except(['create', 'edit', 'update']);
+    Route::post('feedback/toggle-flag/{id}', [FeedbackController::class, 'toggleFlag'])->name('feedback.toggle-flag');
+
+    // ============================================
+    // 🔧 MAINTENANCE REQUEST ROUTES
+    // ============================================
+    Route::resource('maintenance', MaintenanceRequestController::class);
+    Route::post('maintenance/comment/{id}', [MaintenanceRequestController::class, 'addComment'])->name('maintenance.comment');
+
+    // ============================================
+    // 🔧 MAINTENANCE CATEGORY ROUTES
+    // ============================================
+    Route::resource('maintenance-categories', MaintenanceCategoryController::class);
+    Route::get('maintenance-categories/toggle-status/{id}', [MaintenanceCategoryController::class, 'toggleStatus'])->name('maintenance-categories.toggle-status');
+
+    // ============================================
+    // 🏊 AMENITY ROUTES
+    // ============================================
+    Route::resource('amenities', AmenityController::class);
+    Route::get('amenities/toggle-status/{id}', [AmenityController::class, 'toggleStatus'])->name('amenities.toggle-status');
+    Route::get('amenities/{id}/bookings', [AmenityController::class, 'bookings'])->name('amenities.bookings');
+    Route::get('amenities/bookings/{id}', [AmenityController::class, 'showBooking'])->name('amenities.show-booking');
+    Route::put('amenities/bookings/{id}/status', [AmenityController::class, 'updateBookingStatus'])->name('amenities.update-booking-status');
+
+    // ============================================
+    // 📢 COMMUNITY ROUTES
+    // ============================================
+    Route::resource('community', CommunityController::class);
+    Route::post('community/comment/{id}', [CommunityController::class, 'addComment'])->name('community.comment');
+    Route::post('community/like/{id}', [CommunityController::class, 'likePost'])->name('community.like');
+    Route::get('community/toggle-featured/{id}', [CommunityController::class, 'toggleFeatured'])->name('community.toggle-featured');
+    Route::post('community/update-status/{id}', [CommunityController::class, 'updateStatus'])->name('community.update-status');
+    Route::delete('community/comment/{id}', [CommunityController::class, 'deleteComment'])->name('community.delete-comment');
+
+    // ============================================
+    // 📢 COMMUNITY PWA ROUTES
+    // ============================================
+    Route::get('api/community/posts', [CommunityController::class, 'getPwaPosts'])->name('api.community.posts');
+    Route::get('api/community/post/{id}', [CommunityController::class, 'getPwaPost'])->name('api.community.post');
+
+    // ============================================
+    // 👤 STAFF ROUTES
+    // ============================================
+    Route::resource('staff', StaffController::class);
+    Route::get('staff/toggle-emergency/{id}', [StaffController::class, 'toggleEmergency'])->name('staff.toggle-emergency');
+
+    // ============================================
+    // 👤 STAFF PWA ROUTES
+    // ============================================
+    Route::get('api/staff', [StaffController::class, 'getPwaStaff'])->name('api.staff');
+    Route::get('api/staff/emergency', [StaffController::class, 'getEmergencyContacts'])->name('api.staff.emergency');
+
+    // ============================================
+    // 🏢 STAFF DEPARTMENTS ROUTES
+    // ============================================
+    Route::resource('staff-departments', StaffDepartmentController::class);
+    Route::get('staff-departments/toggle-status/{id}', [StaffDepartmentController::class, 'toggleStatus'])->name('staff-departments.toggle-status');
+
+    // ============================================
+    // 🔐 ZKTECO ROUTES
+    // ============================================
+    Route::resource('zkteco', ZKTecoController::class);
+    Route::get('zkteco/test/{id}', [ZKTecoController::class, 'testConnection'])->name('zkteco.test');
+    Route::post('zkteco/unlock/{id}', [ZKTecoController::class, 'unlockDoor'])->name('zkteco.unlock');
+
+    // ============================================
+    // 📹 HIKVISION ROUTES
+    // ============================================
+    Route::resource('hikvision', HikvisionController::class);
+    Route::get('hikvision/test/{id}', [HikvisionController::class, 'testConnection'])->name('hikvision.test');
+    Route::post('hikvision/unlock/{id}', [HikvisionController::class, 'unlockDoor'])->name('hikvision.unlock');
+
+    // ============================================
+    // 📅 GOOGLE CALENDAR ROUTES
+    // ============================================
+    Route::get('google-calendar/settings', [GoogleCalendarController::class, 'settings'])->name('google-calendar.settings');
+    Route::get('google-calendar/redirect', [GoogleCalendarController::class, 'redirect'])->name('google-calendar.redirect');
+    Route::get('google-calendar/callback', [GoogleCalendarController::class, 'callback'])->name('google-calendar.callback');
+    Route::post('google-calendar/disconnect', [GoogleCalendarController::class, 'disconnect'])->name('google-calendar.disconnect');
+    Route::post('google-calendar/sync', [GoogleCalendarController::class, 'syncPreRegister'])->name('google-calendar.sync');
+    Route::get('google-calendar/status', [GoogleCalendarController::class, 'status'])->name('google-calendar.status');
 });
-
-
 
 /*Multi step form*/
 
@@ -181,13 +424,104 @@ Route::get('qrcode/{number}',  [FrontendController::class, 'qrcode'])->name('qrc
 Route::get('terms_and_conditions',  [FrontendController::class, 'termsConditions'])->name('terms_and_conditions.view');
 
 
-// Subscription routes
+// ============================================
+// 📦 SUBSCRIPTION ROUTES
+// ============================================
 Route::get('/admin/packages', [SubscriptionController::class, 'index'])->name('admin.packages.index');
+Route::get('/admin/packages/create', function() {
+    return view('admin.subscription.create');
+})->name('admin.packages.create');
 Route::post('/admin/packages/store', [SubscriptionController::class, 'store'])->name('admin.packages.store');
+Route::get('/admin/packages/edit/{id}', function($id) {
+    $package = DB::table('packages')->where('id', $id)->first();
+    return view('admin.subscription.edit', compact('package'));
+})->name('admin.packages.edit');
 Route::put('/packages/update', [SubscriptionController::class, 'update'])->name('packages.update');
+Route::delete('/admin/packages/destroy/{id}', function($id) {
+    DB::table('packages')->where('id', $id)->delete();
+    return redirect()->route('admin.packages.index')->with('success', 'Package deleted successfully!');
+})->name('admin.packages.destroy');
+Route::post('/admin/updateStatus', [SubscriptionController::class, 'updateStatus'])->name('admin.package.updateStatus');
 
 Route::get('/admin/purchase', [SubscriptionController::class, 'purchase'])->name('subscription.purchase');
 Route::post('/admin/purchase', [SubscriptionController::class, 'purchase_store'])->name('subscription.purchase_store');
-Route::post('/admin/updateStatus', [SubscriptionController::class, 'updateStatus'])->name('admin.package.updateStatus');
-Route::get('/admin/purchase_request', [SubscriptionController::class, 'purchase_request'])->name('subscription.requests'); 
+Route::get('/admin/purchase_request', [SubscriptionController::class, 'purchase_request'])->name('subscription.requests');
 
+
+// ============================================
+// 📝 SELF-SERVICE PORTAL ROUTES
+// ============================================
+Route::get('/pre-register', [SelfServiceController::class, 'showForm'])->name('self-service.form');
+Route::post('/pre-register', [SelfServiceController::class, 'store'])->name('self-service.store');
+Route::get('/pre-register/success/{id}', [SelfServiceController::class, 'success'])->name('self-service.success');
+
+// AJAX endpoints for self-service
+Route::get('/api/get-employees', [SelfServiceController::class, 'getEmployees'])->name('self-service.employees');
+Route::get('/api/get-residents', [SelfServiceController::class, 'getResidents'])->name('self-service.residents');
+Route::get('/api/get-facility-types', [SelfServiceController::class, 'getFacilityTypes'])->name('self-service.facility-types');
+
+
+// ============================================
+// 🔐 TWO-FACTOR AUTHENTICATION ROUTES
+// ============================================
+Route::get('/2fa/setup', [TwoFactorController::class, 'showSetup'])->name('2fa.setup');
+Route::post('/2fa/confirm', [TwoFactorController::class, 'confirmSetup'])->name('2fa.confirm');
+Route::get('/2fa/backup-codes', [TwoFactorController::class, 'showBackupCodes'])->name('2fa.backup-codes');
+Route::post('/2fa/regenerate', [TwoFactorController::class, 'regenerateBackupCodes'])->name('2fa.regenerate');
+Route::post('/2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa.disable');
+Route::get('/2fa/verify', [TwoFactorController::class, 'showVerify'])->name('2fa.verify');
+Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('2fa.verify.post');
+Route::get('/2fa/resend', [TwoFactorController::class, 'resend'])->name('2fa.resend');
+
+
+// ============================================
+// 🌍 LANGUAGE ROUTES
+// ============================================
+Route::get('/language/{locale}', [App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
+
+
+// ============================================
+// 🚨 EMERGENCY ALERT PUBLIC ROUTE (Acknowledgment)
+// ============================================
+Route::get('/emergency/acknowledge/{token}', [EmergencyAlertController::class, 'acknowledge'])->name('emergency.acknowledge');
+
+
+// ============================================
+// 📝 FEEDBACK PUBLIC ROUTES
+// ============================================
+Route::get('/feedback', [FeedbackController::class, 'showForm'])->name('feedback.form');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::get('/feedback/thankyou/{id}', [FeedbackController::class, 'thankYou'])->name('feedback.thankyou');
+
+
+// ============================================
+// 🔐 ZKTECO WEBHOOK ROUTE (Public - Hardware calls this)
+// ============================================
+Route::post('/api/zkteco/webhook', [ZKTecoController::class, 'webhook'])->name('zkteco.webhook');
+Route::post('/api/zkteco/verify', [ZKTecoController::class, 'verifyOtp'])->name('zkteco.verify');
+
+// ============================================
+// 📹 HIKVISION WEBHOOK ROUTE (Public - Hardware calls this)
+// ============================================
+Route::post('/api/hikvision/webhook', [HikvisionController::class, 'webhook'])->name('hikvision.webhook');
+Route::post('/api/hikvision/verify', [HikvisionController::class, 'verifyOtp'])->name('hikvision.verify');
+
+
+// ============================================
+// 📱 PWA ROUTES
+// ============================================
+Route::get('/pwa', [PwaController::class, 'index'])->name('pwa.index');
+Route::get('/pwa/login', [PwaController::class, 'login'])->name('pwa.login');
+Route::post('/pwa/login', [PwaController::class, 'loginPost'])->name('pwa.login.post');
+Route::get('/pwa/dashboard', [PwaController::class, 'dashboard'])->name('pwa.dashboard');
+Route::get('/pwa/logout', [PwaController::class, 'logout'])->name('pwa.logout');
+Route::get('/pwa/{page}', [PwaController::class, 'loadPage'])->name('pwa.page');
+
+// Service Worker and Manifest
+Route::get('/sw.js', function () {
+    return response()->file(public_path('sw.js'));
+})->name('sw.js');
+
+Route::get('/manifest.json', function () {
+    return response()->file(public_path('manifest.json'));
+})->name('manifest.json');

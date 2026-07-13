@@ -1,219 +1,159 @@
 @extends('admin.layouts.master')
 
-@section('css')
-    <link rel="stylesheet" href="{{ asset('assets/lib/inttelinput/css/intlTelInput.css') }}">
-@endsection
+@section('title', 'Profile')
 
 @section('main-content')
-    <section class="section">
-        <div class="section-header">
-            <h1>{{ __('profile.profile') }}</h1>
-            {{ Breadcrumbs::render('profile') }}
+<section class="section">
+    <div class="section-header">
+        <h1>Profile</h1>
+        <div class="section-header-breadcrumb">
+            <div class="breadcrumb-item"><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></div>
+            <div class="breadcrumb-item active">Profile</div>
         </div>
-        <div class="section-body">
-            <div class="row mt-sm-4">
-                <div class="col-12 col-md-12 col-lg-5">
-                    <div class="card profile-widget">
-                        <div class="profile-widget-header">
-                            <img alt="image" src="{{ $user->images }}" class="rounded-circle profile-picture">
-                        </div>
-                        <div class="profile-widget-description">
-                            <div class="profile-widget-name">
-                                {{ $user->name }}
-                                <div class="text-muted d-inline font-weight-normal">
-                                    <div class="slash"></div>
-                                    {{ $user->email }}
-                                </div>
-                            </div>
-                            <dl class="row">
-                                <dt class="col-sm-4">{{ __('profile.username') }}</dt>
-                                <dd class="col-sm-8">{{ $user->username }}</dd>
-                                <dt class="col-sm-3">{{ __('profile.phone') }}</dt>
-                                <dd class="col-sm-9">{{ $user->country_code }}{{ $user->phone }}</dd>
-                                <dt class="col-sm-3">{{ __('profile.address') }}</dt>
-                                <dd class="col-sm-9">
-                                    <p>{{ $user->address }}</p>
-                                </dd>
-                            </dl>
-                        </div>
+    </div>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <img src="{{ auth()->user()->images }}" alt="Profile Image" class="rounded-circle img-fluid" style="width:150px; height:150px; object-fit:cover;">
+                        <h5 class="mt-3">{{ auth()->user()->name }}</h5>
+                        <p class="text-muted">{{ auth()->user()->getrole->name ?? 'User' }}</p>
+                        <p class="text-muted small">{{ auth()->user()->email }}</p>
                     </div>
-                    <div class="card">
-                        <form method="post" action="{{ route('admin.profile.change') }}">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Edit Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('admin.profile.update', auth()->user()->id) }}">
                             @csrf
-                            @method('put')
-                            <div class="card-header">
-                                <h4>{{ __('profile.change_password') }}</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="form-group col-md-12 col-12">
-                                        <label for="old_password">{{ __('profile.old_password') }}</label> <span
-                                            class="text-danger">*</span>
-                                        <input id="old_password" name="old_password" type="password"
-                                            class="form-control @error('old_password') is-invalid @enderror">
-                                        @error('old_password')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                            @method('PUT')
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" name="first_name" class="form-control" value="{{ auth()->user()->first_name }}">
                                     </div>
-                                    <div class="form-group col-md-12 col-12">
-                                        <label for="password">{{ __('profile.password') }}</label> <span
-                                            class="text-danger">*</span>
-                                        <input id="password" name="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror" />
-                                        @error('password')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-12 col-12">
-                                        <label
-                                            for="password_confirmation">{{ __('profile.password_confirmation') }}</label>
-                                        <span class="text-danger">*</span>
-                                        <input id="password_confirmation" name="password_confirmation" type="password"
-                                            class="form-control @error('password_confirmation') is-invalid @enderror" />
-                                        @error('password_confirmation')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" name="last_name" class="form-control" value="{{ auth()->user()->last_name }}">
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-primary">{{ __('profile.submit') }}</button>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" class="form-control" value="{{ auth()->user()->email }}">
                             </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" name="phone" class="form-control" value="{{ auth()->user()->phone }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="address" class="form-control" value="{{ auth()->user()->address }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
                         </form>
                     </div>
                 </div>
-                <div class="col-12 col-md-12 col-lg-7">
-                    <form action="{{ route('admin.profile.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <label>{{ __('profile.first_name') }}</label> <span class="text-danger">*</span>
-                                        <input type="text" name="first_name"
-                                            class="form-control @error('first_name') is-invalid @enderror"
-                                            value="{{ old('first_name', $user->first_name) }}">
-                                        @error('first_name')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col">
-                                        <label>{{ __('profile.last_name') }}</label> <span class="text-danger">*</span>
-                                        <input type="text" name="last_name"
-                                            class="form-control @error('last_name') is-invalid @enderror"
-                                            value="{{ old('last_name', $user->last_name) }}">
-                                        @error('last_name')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
 
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <label>{{ __('profile.email') }}</label> <span class="text-danger">*</span>
-                                        <input type="text" name="email"
-                                            class="form-control @error('email') is-invalid @enderror"
-                                            value="{{ old('email', $user->email) }}">
-                                        @error('email')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col">
-                                        <label>{{ __('profile.phone') }}</label>
-                                        <input type="text" name="phone" id="number"
-                                            class="form-control @error('phone') is-invalid @enderror"
-                                            value="{{ old('phone', $user->phone) }}">
-                                            
-                                        <input type="hidden" id="code" name="country_code"
-                                            value="{{ old('code', $user->country_code) }}">
-                                        <input type="hidden" id="code_name" name="country_code_name"
-                                            value="{{ old('code_name', $user->country_code_name) }}">
-                                        @error('phone')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <label>{{ __('profile.username') }}</label>
-                                        <input type="text" name="username"
-                                            class="form-control @error('username') is-invalid @enderror"
-                                            value="{{ old('username', $user->username) }}">
-                                        @error('username')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col">
-                                        <label for="customFile">{{ __('profile.image') }}</label>
-                                        <div class="custom-file">
-                                            <input name="image" type="file"
-                                                class="custom-file-input @error('image') is-invalid @enderror"
-                                                id="customFile" onchange="readURL(this);">
-                                            <label class="custom-file-label"
-                                                for="customFile">{{ __('profile.choose_file') }}</label>
-                                        </div>
-                                        @if ($errors->has('image'))
-                                            <div class="help-block text-danger">
-                                                {{ $errors->first('image') }}
-                                            </div>
-                                        @endif
-                                        <img class="img-thumbnail image-width mt-4 mb-3" id="previewImage"
-                                            src="{{ $user->images }}"
-                                            alt="{{ $user->name }} {{ __('profile.profile_image') }}" />
-                                    </div>
-                                    <div class="form-group col">
-                                        <label>{{ __('profile.address') }}</label>
-                                        <textarea name="address" class="form-control small-textarea-height" id="address" cols="30" rows="10">{{ old('address', $user->address) }}</textarea>
-                                        @error('address')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4>Change Password</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('admin.profile.change') }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" name="current_password" class="form-control" required>
                             </div>
-                            <div class="card-footer text-right">
-                                <button class="btn btn-primary mr-1" type="submit">{{ __('profile.submit') }}</button>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="password" class="form-control" required>
                             </div>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" name="password_confirmation" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Change Password</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4>🔐 Two-Factor Authentication</h4>
+                    </div>
+                    <div class="card-body">
+                        @if(auth()->user()->hasTwoFactorEnabled())
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Two-factor authentication is <strong>enabled</strong> on your account.
+                                <br>
+                                <small>Enabled on: {{ auth()->user()->two_factor_enabled_at ? auth()->user()->two_factor_enabled_at->format('d M Y H:i') : 'N/A' }}</small>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{{ route('2fa.setup') }}" class="btn btn-warning">
+                                    <i class="fas fa-sync-alt me-2"></i>Reconfigure 2FA
+                                </a>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#disable2faModal">
+                                    <i class="fas fa-times-circle me-2"></i>Disable 2FA
+                                </button>
+                                <a href="{{ route('2fa.backup-codes') }}" class="btn btn-info">
+                                    <i class="fas fa-key me-2"></i>View Backup Codes
+                                </a>
+                            </div>
+                        @else
+                            <p>Two-factor authentication adds an extra layer of security to your account.</p>
+                            <p class="text-muted small">When enabled, you'll need to enter a code from your authenticator app after logging in.</p>
+                            <a href="{{ route('2fa.setup') }}" class="btn btn-primary">
+                                <i class="fas fa-shield-alt me-2"></i>Enable Two-Factor Authentication
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-@endsection
+    </div>
+</section>
 
-@section('scripts')
-    <script src="{{ asset('js/profile/index.js') }}"></script>
-    <script>
-        localStorage.setItem('country_code_name', '{{ $user->country_code_name }}');
-    </script>
-    <script defer src="{{ asset('assets/lib/inttelinput/js/intlTelInput-jquery.js') }}"></script>
-    <script defer src="{{ asset('assets/lib/inttelinput/js/intlTelInput.js') }}"></script>
-    <script defer src="{{ asset('assets/lib/inttelinput/js/utils.js') }}"></script>
-    <script defer src="{{ asset('assets/lib/inttelinput/js/data.js') }}"></script>
-    <script defer src="{{ asset('assets/lib/inttelinput/js/init.js') }}"></script>
+@if(auth()->user()->hasTwoFactorEnabled())
+<div class="modal fade" id="disable2faModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('2fa.disable') }}">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Disable Two-Factor Authentication</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Warning!</strong> Disabling 2FA will make your account less secure.
+                    </div>
+                    <p>Enter your password to confirm.</p>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Disable 2FA</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
 @endsection
